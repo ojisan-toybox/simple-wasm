@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>simple wasm</title>
+  </head>
+  <body>
+    <button id="countup">count up!</button>
+    <script>
+      fetch("simple.wasm")
+        .then((response) => response.arrayBuffer())
+        .then((buffer) => WebAssembly.compile(buffer))
+        .then((module) => WebAssembly.instantiate(module))
+        .then((instance) => {
+          document.getElementById("countup").addEventListener(
+            "click",
+            () => {
+              this.value = instance.exports.count(this.value, 1);
+              console.log(this.value);
+            },
+            false
+          );
+        });
+    </script>
+  </body>
+</html>
